@@ -1,0 +1,36 @@
+Problem Link
+
+https://codeforces.com/problemset/problem/1157/A
+
+Problem code
+
+#include<iostream>
+using namespace std;
+#define ll long long
+int main()
+{
+    ll n;
+    cin>>n;
+    ll num=9;
+    if(n<10)
+    {
+        cout<<"9";
+    }
+    else{
+        while(n>=10)
+        {
+            n=n+1;
+            num+=1;
+            while(n%10==0)
+            {
+                n=n/10;
+            }
+            if(n<10)
+            {
+                break;
+            }
+        }
+        cout<<num<<endl;
+    }
+    
+}
