@@ -1,0 +1,199 @@
+#include <bits/stdc++.h> 
+using namespace std; 
+#define ll long long  
+
+
+struct Node{
+    ll key;
+    Node* left;
+    Node* right;
+};
+
+struct Node* newNode(ll val)
+{
+    Node* n = new Node;
+    n->key=val;
+    n->left=NULL;
+    n->right=NULL;
+    return n;
+};
+
+struct Node* insertNode(struct Node* root,ll val,queue<Node *>& q)
+{
+    Node* node=newNode(val);
+    if(root==NULL)
+    {
+        root=node;
+    }
+    else if(q.front()->left==NULL)
+    {
+        q.front()->left=node;
+    }
+    else{
+        q.front()->right=node;
+        q.pop();
+    }
+    q.push(node);
+    return root;
+}
+
+Node* createTree(vector<long long > vec,ll n)
+{
+    Node* root=NULL;
+    queue<Node*> q;
+    for(ll i=0;i<n;i++)
+    {
+        root=insertNode(root,vec[i],q);
+    }
+    return root;
+}
+
+void levelOrder(struct Node* root)
+{
+    if(root==NULL)
+    {
+        return;
+    }
+    queue<Node*> q;
+    q.push(root);
+    while(!q.empty())
+    {
+            cout<<q.front()->key<<" ";
+            if(q.front()->left!=NULL)
+            {
+                q.push(q.front()->left);
+            }
+            if(q.front()->right!=NULL)
+            {
+                q.push(q.front()->right);
+            }
+            q.pop();
+    }   
+}  
+
+ll height(Node* node)  
+{  
+    if (node == NULL)  
+        return 0;  
+    else
+    {  
+        /* compute the height of each subtree */
+        ll lheight = height(node->left);  
+        ll rheight = height(node->right);  
+  
+        /* use the larger one */
+        if (lheight > rheight)  
+            return(lheight + 1);  
+        else return(rheight + 1);  
+    }  
+}  
+
+ll sum=0;
+ll sum2=0;
+void printGivenLevel(Node* root, ll level,ll b,ll a,ll d)  
+{  
+    if (root == NULL)  
+        return;  
+    if (level == 1)
+    {
+        sum++;
+        if(sum==b && (a==1|| a==3))
+        {
+            if(a==1){
+            cout << root->key << endl;
+            sum=0;
+            }
+            if(a==3){
+                root->key=d;
+                sum=0;
+            }
+        }
+        if(a==2)
+        {
+            sum2=sum2+root->key;
+        }
+    }    
+    else if (level > 1)  
+    {  
+        printGivenLevel(root->left, level-1,b,a,d);  
+        printGivenLevel(root->right, level-1,b,a,d);  
+    }  
+}
+
+void printLevelOrder(Node* root,ll b,ll c,ll a,ll d)  
+{  
+    // int h = height(root);  
+    // int i;  
+    // for (i = 1; i <= h; i++)  
+    //     printGivenLevel(root, i,b,c);
+    if(a==1)
+    printGivenLevel(root, c,b,a,d);
+    if(a==2)
+    {
+    for (ll i = b; i <= c; i++)  
+        printGivenLevel(root, i,b,a,d);
+    }
+    if(a==3)
+    {
+        printGivenLevel(root, c,b,a,d);
+    }
+}  
+
+int main()
+{
+    ll n,k;
+    cin>>n>>k;
+    vector<long long> v;
+    for(ll i=0;i<n;i++)
+    {
+        ll a;
+        cin>>a;
+        v.push_back(a);
+    }
+    Node* root = createTree(v,n);
+    // levelOrder(root);
+    while(k--)
+    {
+        ll a,b,c,d=0;
+        cin>>a;
+        if(a==1)
+        {
+            cin>>b>>c;
+            printLevelOrder(root,b,c,a,d);
+        }
+        if(a==2)
+        {
+            cin>>b>>c;
+            printLevelOrder(root,b,c,a,d);
+            cout<<sum2<<endl;
+            sum2=0;
+        }
+        if(a==3)
+        {
+            cin>>b>>c>>d;
+            printLevelOrder(root,b,c,a,d);
+        }
+    }
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
