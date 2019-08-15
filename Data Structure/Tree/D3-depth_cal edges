@@ -1,0 +1,54 @@
+Problem link
+
+https://www.hackerearth.com/practice/algorithms/graphs/depth-first-search/practice-problems/algorithm/monk-and-graph-problem/
+
+Problem code
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+const int MXSIZE = 1e5+5;
+  bool visited[MXSIZE];    
+
+
+   
+
+    void dfs(vector<long long> adj[],ll s,ll &count) {
+       
+        // cout<<"Sa"<<count<<endl;
+        visited[s] =1;
+        for(ll i = 0;i < adj[s].size();++i)   
+        {
+             count++;
+            if(!visited[adj[s][i]])
+            { 
+                 
+            dfs(adj,adj[s][i],count);
+                
+            }
+        }
+    }
+
+    int main() {
+        ll nodes, edges, x, y, connectedComponents = 0;
+        cin >> nodes;                       //Number of nodes
+        cin >> edges;  //Number of edges
+        vector <ll> adj[nodes+1];
+        for(ll i = 0;i < edges;++i) {
+         cin >> x >> y; 
+         adj[x].push_back(y);                   //Edge from vertex x to vertex y
+         adj[y].push_back(x);                   //Edge from vertex y to vertex x
+        }                          //Initialize all nodes as not visited
+        ll ans=0;
+         
+        for(ll i = 1;i <= nodes;++i) {
+            if(!visited[i]){
+             ll count=0;
+             dfs(adj,i,count);
+            //  cout<<"s"<<count<<endl;
+            ans=max(ans,count);
+            }
+        }
+        cout << ans/2 << endl;
+        return 0;
+    }
